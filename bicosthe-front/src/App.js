@@ -1,8 +1,7 @@
-import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import FeedDeServicos from './pages/FeedDeServicos';
 
-function Home() {
-  return <h1>Página Inicial</h1>;
-}
+
 
 function Sobre() {
   return <h1>Sobre nós</h1>;
@@ -22,7 +21,7 @@ function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<FeedDeServicos />} />servicos
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/contato" element={<Contato />} />
       </Routes>
