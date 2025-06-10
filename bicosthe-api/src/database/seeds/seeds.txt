@@ -1,4 +1,0 @@
-INSERT INTO categoria (nome) VALUES
-	('concerto'),
-    ('construção'),
-    ('limpeza');

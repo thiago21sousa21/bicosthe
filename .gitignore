@@ -2,3 +2,4 @@
 /bicosthe-api/.env
 /bicosthe-front/node_modules
 /teste
+bicosthe-api/src/database/venv

@@ -6,7 +6,14 @@
   "main": "./src/app.js",
   "scripts": {
     "start": "node ./src/app.js",
-    "dev": "nodemon ./src/app.js"
+    "dev": "nodemon ./src/app.js",
+    "povoar": "npm run exec ./src/database/seeds/povoar.py",
+    "criar-venv": "python3 -m venv src/database/venv && src/database/venv/bin/pip install sqlalchemy pandas dotenv pymysql",
+    "exec": "./src/database/venv/bin/python3",
+    "create-bd": "npm run exec ./src/database/creation/creation.py",
+    "criar-banco-sql": "dotenv -e ./.env -- sh -c 'mysql -u $DB_USER -p$DB_PASSWORD -h $DB_HOST < ./src/database/creation/creation.sql'",
+    "povoar-sql": "dotenv -e ./.env -- sh -c 'mysql -u $DB_USER -p$DB_PASSWORD -h $DB_HOST -D $DB_NAME < ./src/database/seeds/populate_bicosthe.sql'",
+    "reset-db": "npm run criar-banco-sql && npm run povoar-sql"
   },
   "repository": {
     "type": "git",
@@ -23,6 +30,7 @@
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "dotenv-cli": "^8.0.0",
     "express": "^4.18.2",
     "joi": "^17.9.2",
     "mysql2": "^3.14.1",
