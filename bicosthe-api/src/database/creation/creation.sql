@@ -1,4 +1,4 @@
-DROP DATABASE bicosthe;
+DROP DATABASE IF EXISTS bicosthe;
 CREATE DATABASE bicosthe;
 USE bicosthe;
 
