@@ -10,5 +10,6 @@ route.post('/novo-bico', schemaValidation(schemaCadastroServico), tokenValidatio
 route.get('/bicos', controllers.demand.getServicos);
 route.get('/categories', controllers.demand.getCategories)
 route.get('/zonas', controllers.demand.getZonas)
+route.get('/bairros', controllers.demand.getBairros);
 
 export const demands = { route };

@@ -13,6 +13,7 @@ async function insertServico(req, res) {
 }
 
 async function getServicos(req, res) {
+    console.log(req.query)
     try {
         const servicos = await services.demand.getServicos();
         res.status(200).json(servicos);
@@ -38,4 +39,14 @@ async function getZonas(req, res){
         res.status(500).send("Erro ao buscar as categorias: " + error.message)
     }
 }
-export { insertServico, getServicos, getCategories, getZonas };
+
+async function getBairros(req, res){
+    try {
+        const bairros = await services.demand.getBairros()
+        res.status(200).json(bairros)
+    } catch (error) {
+        res.status(500).send("Erro ao buscar as bairros: " + error.message)
+    }
+}
+
+export { insertServico, getServicos, getCategories, getZonas, getBairros };

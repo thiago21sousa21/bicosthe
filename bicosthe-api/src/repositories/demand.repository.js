@@ -44,10 +44,23 @@ async function getZonas(){
         const [zonas]= await db.query(query)
         return zonas
     } catch (error) {
-        ("Erro ao buscar as categorias: " + error.message)
+        ("Erro ao buscar as zonas: " + error.message)
+    }
+}
+
+
+async function getBairros(){
+    try {
+        const query = `
+            SELECT * FROM bairro;
+        `;
+        const [bairros]= await db.query(query)
+        return bairros
+    } catch (error) {
+        ("Erro ao buscar as bairros: " + error.message)
     }
 }
 
 
 
-export { insertServico, getServicos, getCategories, getZonas };
+export { insertServico, getServicos, getCategories, getZonas, getBairros };

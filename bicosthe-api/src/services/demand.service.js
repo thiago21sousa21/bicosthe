@@ -22,7 +22,16 @@ async function getZonas(){
         const zonas = await repositories.demand.getZonas()
         return zonas
     } catch (error) {
-        res.status(500).send("Erro ao buscar as categorias: " + error.message)
+        return "Erro ao buscar as zonas: " + error.message
+    }
+}
+
+async function getBairros(){
+    try {
+        const bairros = await repositories.demand.getBairros()
+        return bairros
+    } catch (error) {
+        return "Erro ao buscar as bairros: " + error.message
     }
 }
 
@@ -30,4 +39,4 @@ async function getZonas(){
 
 
 
-export {insertServico, getServicos, getCategories, getZonas}
+export {insertServico, getServicos, getCategories, getZonas, getBairros};
