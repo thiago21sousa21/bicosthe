@@ -1,5 +1,7 @@
 import Joi from 'joi';
 
+const mysqlDateTimeRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+
 export const schemaCadastroServico = Joi.object({
   valor: Joi.number()
     .precision(2)
@@ -14,16 +16,26 @@ export const schemaCadastroServico = Joi.object({
     .max(1000)
     .required(),
 
-  dataInicio: Joi.date()
-    .iso()
-    .required(),
-
-  dataFim: Joi.date()
-    .iso()
-    .greater(Joi.ref('dataInicio'))
+  dataInicio: Joi.string()
+    .pattern(mysqlDateTimeRegex)
     .required()
     .messages({
-      'date.greater': 'Data de fim deve ser depois da data de início',
+      "string.pattern.base": "dataInicio deve estar no formato YYYY-MM-DD HH:MM:SS",
+    }),
+
+
+  dataFim: Joi.string()
+    .pattern(mysqlDateTimeRegex)
+    .required()
+    .custom((value, helpers) => {
+      const inicio = helpers.state.ancestors[0]?.dataInicio;
+      if (inicio && value <= inicio) {
+        return helpers.message("dataFim deve ser depois de dataInicio");
+      }
+      return value;
+    })
+    .messages({
+      "string.pattern.base": "dataFim deve estar no formato YYYY-MM-DD HH:MM:SS",
     }),
 
   idregiao: Joi.number()

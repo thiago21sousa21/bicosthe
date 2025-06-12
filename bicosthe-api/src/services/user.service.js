@@ -18,7 +18,7 @@ async function login(cred) {
     if (!idsession) {
         throw new Error("Error inserting session");
     }
-    return {token , idsession};
+    return {token , idsession, idusuario: user.idusuario};
   
 }
 
