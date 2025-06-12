@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feed de Bicos</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    .filtros { margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .bico { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .botao-novo { background-color: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; text-decoration: none; }
+    .botao-novo:hover { background-color: #218838; }
+  </style>
+</head>
+<body>
+  <h1>Feed de Bicos</h1>
+
+  <div class="filtros">
+    <select id="regiaoFiltro">
+      <option value="">Todas as Zonas</option>
+      <option value="1">Zona Norte</option>
+      <option value="2">Zona Sul</option>
+      <option value="3">Zona Leste</option>
+      <option value="4">Zona Oeste</option>
+      <option value="5">Centro</option>
+      <option value="6">Rural</option>
+    </select>
+    <input type="text" id="categoriaFiltro" placeholder="Categoria / Título">
+    <input type="text" id="bairroFiltro" placeholder="Bairro (Opcional se estiver em idregiao)">
+    <input type="number" id="valorMaxFiltro" placeholder="Valor máximo">
+    <button onclick="carregarFeed()">Filtrar</button>
+    <a href="novo-bico.html" class="botao-novo">+ Novo Bico</a>
+  </div>
+
+  <div id="feed"></div>
+
+  <script>
+    async function carregarFeed() {
+      try {
+        const response = await axios.get('http://localhost:5000/bicos');
+        const bicos = response.data;
+
+        const regiao = document.getElementById('regiaoFiltro').value;
+        const categoria = document.getElementById('categoriaFiltro').value.toLowerCase();
+        const bairro = document.getElementById('bairroFiltro').value.toLowerCase();
+        const valorMax = parseFloat(document.getElementById('valorMaxFiltro').value);
+
+        const filtrado = bicos.filter(bico => {
+          if (regiao && bico.idregiao != regiao) return false;
+          if (categoria && !bico.titulo.toLowerCase().includes(categoria)) return false;
+          if (bairro && !bico.descricao.toLowerCase().includes(bairro)) return false;
+          if (!isNaN(valorMax) && parseFloat(bico.valor) > valorMax) return false;
+          return true;
+        });
+
+        mostrarFeed(filtrado);
+      } catch (error) {
+        console.error('Erro ao carregar feed:', error);
+      }
+    }
+
+    function mostrarFeed(bicos) {
+      const feed = document.getElementById('feed');
+      feed.innerHTML = '';
+      if (bicos.length === 0) {
+        feed.innerHTML = '<p>Nenhum bico encontrado com os filtros selecionados.</p>';
+        return;
+      }
+
+      bicos.forEach(bico => {
+        const card = document.createElement('div');
+        card.className = 'bico';
+        card.innerHTML = `
+          <h3>${bico.titulo}</h3>
+          <p><strong>Descrição:</strong> ${bico.descricao}</p>
+          <p><strong>Valor:</strong> R$ ${parseFloat(bico.valor).toFixed(2)}</p>
+          <p><strong>Início:</strong> ${new Date(bico.dataInicio).toLocaleString()}</p>
+          <p><strong>Fim:</strong> ${new Date(bico.dataFim).toLocaleString()}</p>
+          <p><strong>Região:</strong> ${bico.idregiao}</p>
+        `;
+        feed.appendChild(card);
+      });
+    }
+
+    window.onload = carregarFeed;
+  </script>
+</body>
+</html>

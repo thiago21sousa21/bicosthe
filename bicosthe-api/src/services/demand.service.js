@@ -7,4 +7,18 @@ async function insertServico(dados) {
 async function getServicos() {
     return await repositories.demand.getServicos();
 }
-export {insertServico, getServicos}
+
+async function getCategories(){
+    try {
+        const categories = await repositories.demand.getCategories()
+        return categories
+    } catch (error) {
+        res.status(500).send("Erro ao buscar as categorias: " + error.message)
+    }
+}
+
+
+
+
+
+export {insertServico, getServicos, getCategories}

@@ -24,4 +24,18 @@ async function getServicos() {
     }
 }
 
-export { insertServico, getServicos };
+async function getCategories(){
+    try {
+        const query = `
+            SELECT * FROM categoria;
+        `;
+        const [categories]= await db.query(query)
+        return categories
+    } catch (error) {
+        res.status(500).send("Erro ao buscar as categorias: " + error.message)
+    }
+}
+
+
+
+export { insertServico, getServicos, getCategories };

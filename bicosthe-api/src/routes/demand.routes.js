@@ -8,4 +8,5 @@ const route = Router();
 
 route.post('/novo-bico', schemaValidation(schemaCadastroServico), tokenValidation, controllers.demand.insertServico);
 route.get('/bicos', controllers.demand.getServicos);
+route.get('/categories', controllers.demand.getCategories)
 export const demands = { route };
