@@ -17,8 +17,17 @@ async function getCategories(){
     }
 }
 
+async function getZonas(){
+    try {
+        const zonas = await repositories.demand.getZonas()
+        return zonas
+    } catch (error) {
+        res.status(500).send("Erro ao buscar as categorias: " + error.message)
+    }
+}
 
 
 
 
-export {insertServico, getServicos, getCategories}
+
+export {insertServico, getServicos, getCategories, getZonas}

@@ -5,34 +5,41 @@ USE bicosthe;
 CREATE TABLE usuario (
   idusuario INT PRIMARY KEY AUTO_INCREMENT,
   cpf CHAR(11) UNIQUE NOT NULL,
-  nome VARCHAR(100),
-  email VARCHAR(45),
-  senha VARCHAR(255),
+  nome VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  senha VARCHAR(255) NOT NULL,
   celular VARCHAR(13),
   bloqueado BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE regiao (
-  idregiao INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE zona (
+  idzona INT PRIMARY KEY,
+  zona VARCHAR(45)
+);
+
+
+CREATE TABLE bairro (
+  idbairro INT PRIMARY KEY AUTO_INCREMENT,
   bairro VARCHAR(45),
-  zona ENUM('norte', 'sul', 'leste', 'sudeste', 'centro')
+  idzona INT NOT NULL,
+  FOREIGN KEY (idzona) REFERENCES zona(idzona)
 );
 
 CREATE TABLE servico (
   idservico INT PRIMARY KEY AUTO_INCREMENT,
   valor DECIMAL(10,2),
-  descricao TEXT,
-  titulo VARCHAR(100),
+  descricao TEXT NOT NULL,
+  titulo VARCHAR(100) NOT NULL,
   dataInicio DATETIME,
   dataFim DATETIME,
-  idregiao INT,
+  idbairro INT,
   usuarioId INT, -- quem criou o serviço
   contato_visivel BOOLEAN DEFAULT FALSE,
   id_usuario_atribuido INT DEFAULT NULL,
   visivel_feed BOOLEAN DEFAULT TRUE,
   FOREIGN KEY (usuarioId) REFERENCES usuario(idusuario),
   FOREIGN KEY (id_usuario_atribuido) REFERENCES usuario(idusuario),
-  FOREIGN KEY (idregiao) REFERENCES regiao(idregiao)
+  FOREIGN KEY (idbairro) REFERENCES bairro(idbairro)
 );
 
 CREATE TABLE usuario_servico (
@@ -46,7 +53,7 @@ CREATE TABLE usuario_servico (
 
 CREATE TABLE categoria (
   idcategoria INT PRIMARY KEY AUTO_INCREMENT,
-  nome VARCHAR(45)
+  nome VARCHAR(45) NOT NULL
 );
 
 CREATE TABLE servico_categoria (
@@ -76,10 +83,3 @@ CREATE TABLE sessao (
   ativo BOOLEAN DEFAULT TRUE,
   FOREIGN KEY (idusuario) REFERENCES usuario(idusuario)
 );
-
-ALTER TABLE usuario MODIFY nome VARCHAR(100) NOT NULL;
-ALTER TABLE usuario MODIFY email VARCHAR(45) NOT NULL;
-ALTER TABLE usuario MODIFY senha VARCHAR(255) NOT NULL;
-ALTER TABLE servico MODIFY titulo VARCHAR(100) NOT NULL;
-ALTER TABLE servico MODIFY descricao TEXT NOT NULL;
-ALTER TABLE categoria MODIFY nome VARCHAR(45) NOT NULL;

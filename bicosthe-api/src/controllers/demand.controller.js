@@ -30,4 +30,12 @@ async function getCategories(req, res){
     }
 }
 
-export { insertServico, getServicos, getCategories };
+async function getZonas(req, res){
+    try {
+        const zonas = await services.demand.getZonas()
+        res.status(200).json(zonas)
+    } catch (error) {
+        res.status(500).send("Erro ao buscar as categorias: " + error.message)
+    }
+}
+export { insertServico, getServicos, getCategories, getZonas };

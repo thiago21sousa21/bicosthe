@@ -32,10 +32,22 @@ async function getCategories(){
         const [categories]= await db.query(query)
         return categories
     } catch (error) {
-        res.status(500).send("Erro ao buscar as categorias: " + error.message)
+        ("Erro ao buscar as categorias: " + error.message)
+    }
+}
+
+async function getZonas(){
+    try {
+        const query = `
+            SELECT * FROM zona;
+        `;
+        const [zonas]= await db.query(query)
+        return zonas
+    } catch (error) {
+        ("Erro ao buscar as categorias: " + error.message)
     }
 }
 
 
 
-export { insertServico, getServicos, getCategories };
+export { insertServico, getServicos, getCategories, getZonas };

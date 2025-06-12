@@ -1,4 +1,4 @@
--- Arquivo SQL para povoamento do banco de dados bicosthe
+-- Arquivo SQL para povoamento do banco de dados bicosthe (Nova Estrutura)
 
 -- -----------------------------------------------------
 -- Inserção de dados na tabela `usuario`
@@ -11,15 +11,29 @@ INSERT INTO usuario (cpf, nome, email, senha, celular, bloqueado) VALUES
 ('55566677788', 'Carlos Oliveira', 'carlos.oliveira@example.com', '$2a$10$hashedpassword.klmno', '86991238765', FALSE);
 
 -- -----------------------------------------------------
--- Inserção de dados na tabela `regiao`
+-- Inserção de dados na tabela `zona`
 -- -----------------------------------------------------
-INSERT INTO regiao (bairro, zona) VALUES
-('Centro', 'centro'),
-('Morada do Sol', 'leste'),
-('Saci', 'sul'),
-('Mocambinho', 'norte'),
-('São João', 'leste'),
-('Dirceu Arcoverde', 'sudeste');
+-- Assumindo que você quer IDs específicos para cada zona, como 1 para 'centro', 2 para 'leste', etc.
+-- Se a tabela zona tiver AUTO_INCREMENT, você pode omitir o idzona e ele será gerado.
+-- Neste exemplo, estou mantendo a ideia de IDs específicos para as zonas para facilitar a referência.
+INSERT INTO zona (idzona, zona) VALUES
+(1, 'centro'),
+(2, 'leste'),
+(3, 'sul'),
+(4, 'norte'),
+(5, 'sudeste');
+
+-- -----------------------------------------------------
+-- Inserção de dados na tabela `bairro`
+-- -----------------------------------------------------
+-- Os idzona referenciam os IDs inseridos na tabela `zona` acima.
+INSERT INTO bairro (bairro, idzona) VALUES
+('Centro', 1),          -- idzona 1 (centro)
+('Morada do Sol', 2),   -- idzona 2 (leste)
+('Saci', 3),            -- idzona 3 (sul)
+('Mocambinho', 4),      -- idzona 4 (norte)
+('São João', 2),        -- idzona 2 (leste)
+('Dirceu Arcoverde', 5); -- idzona 5 (sudeste)
 
 -- -----------------------------------------------------
 -- Inserção de dados na tabela `categoria`
@@ -37,20 +51,24 @@ INSERT INTO categoria (nome) VALUES
 -- -----------------------------------------------------
 -- Inserção de dados na tabela `servico`
 -- -----------------------------------------------------
-INSERT INTO servico (valor, descricao, titulo, dataInicio, dataFim, idregiao, usuarioId, contato_visivel, id_usuario_atribuido, visivel_feed) VALUES
+-- Os idbairro referenciam os IDs inseridos na tabela `bairro`.
+-- Você precisará verificar qual `idbairro` corresponde a qual bairro após a inserção.
+-- Para simplificar neste exemplo, estou usando os IDs sequenciais que seriam gerados
+-- se você inserisse os bairros na ordem em que estão no script `bairro`.
+INSERT INTO servico (valor, descricao, titulo, dataInicio, dataFim, idbairro, usuarioId, contato_visivel, id_usuario_atribuido, visivel_feed) VALUES
 -- Serviços criados por João Silva (idusuario = 1)
-(150.00, 'Conserto de vazamento em pia da cozinha, URGENTE.', 'Conserto de Vazamento', '2025-06-10 09:00:00', '2025-06-10 12:00:00', 1, 1, TRUE, NULL, TRUE), -- Centro
-(200.00, 'Instalação de novas tomadas e fiação para chuveiro elétrico.', 'Instalação Elétrica', '2025-06-12 14:00:00', '2025-06-12 18:00:00', 2, 1, TRUE, NULL, TRUE), -- Morada do Sol
-(120.00, 'Limpeza completa de apartamento 2 quartos, 2 banheiros.', 'Diarista para Apto', '2025-06-15 08:00:00', '2025-06-15 16:00:00', 3, 1, FALSE, NULL, TRUE), -- Saci
+(150.00, 'Conserto de vazamento em pia da cozinha, URGENTE.', 'Conserto de Vazamento', '2025-06-10 09:00:00', '2025-06-10 12:00:00', 1, 1, TRUE, NULL, TRUE), -- Centro (idbairro = 1)
+(200.00, 'Instalação de novas tomadas e fiação para chuveiro elétrico.', 'Instalação Elétrica', '2025-06-12 14:00:00', '2025-06-12 18:00:00', 2, 1, TRUE, NULL, TRUE), -- Morada do Sol (idbairro = 2)
+(120.00, 'Limpeza completa de apartamento 2 quartos, 2 banheiros.', 'Diarista para Apto', '2025-06-15 08:00:00', '2025-06-15 16:00:00', 3, 1, FALSE, NULL, TRUE), -- Saci (idbairro = 3)
 
 -- Serviços criados por Maria Souza (idusuario = 2)
-(80.00, 'Poda de árvores e corte de grama em jardim residencial.', 'Manutenção de Jardim', '2025-06-11 10:00:00', '2025-06-11 13:00:00', 4, 2, TRUE, 1, TRUE), -- Mocambinho, atribuído a João Silva
-(300.00, 'Construção de muro de contenção em área de declive.', 'Construção de Muro', '2025-06-20 08:00:00', '2025-06-25 17:00:00', 5, 2, TRUE, NULL, TRUE), -- São João
+(80.00, 'Poda de árvores e corte de grama em jardim residencial.', 'Manutenção de Jardim', '2025-06-11 10:00:00', '2025-06-11 13:00:00', 4, 2, TRUE, 1, TRUE), -- Mocambinho (idbairro = 4), atribuído a João Silva
+(300.00, 'Construção de muro de contenção em área de declive.', 'Construção de Muro', '2025-06-20 08:00:00', '2025-06-25 17:00:00', 5, 2, TRUE, NULL, TRUE), -- São João (idbairro = 5)
 
 -- Serviços criados por Ana Pereira (idusuario = 4)
-(50.00, 'Aulas de reforço em matemática para ensino fundamental.', 'Aulas de Matemática', '2025-06-13 15:00:00', '2025-06-13 17:00:00', 1, 4, TRUE, NULL, TRUE), -- Centro
-(400.00, 'Desenvolvimento de website institucional para pequena empresa.', 'Criação de Website', '2025-07-01 09:00:00', '2025-07-30 17:00:00', 6, 4, FALSE, NULL, TRUE), -- Dirceu Arcoverde
-(180.00, 'Criação de logo e identidade visual para novo negócio.', 'Designer Gráfico', '2025-06-18 10:00:00', '2025-06-20 18:00:00', 2, 4, TRUE, 5, TRUE); -- Morada do Sol, atribuído a Carlos Oliveira
+(50.00, 'Aulas de reforço em matemática para ensino fundamental.', 'Aulas de Matemática', '2025-06-13 15:00:00', '2025-06-13 17:00:00', 1, 4, TRUE, NULL, TRUE), -- Centro (idbairro = 1)
+(400.00, 'Desenvolvimento de website institucional para pequena empresa.', 'Criação de Website', '2025-07-01 09:00:00', '2025-07-30 17:00:00', 6, 4, FALSE, NULL, TRUE), -- Dirceu Arcoverde (idbairro = 6)
+(180.00, 'Criação de logo e identidade visual para novo negócio.', 'Designer Gráfico', '2025-06-18 10:00:00', '2025-06-20 18:00:00', 2, 4, TRUE, 5, TRUE); -- Morada do Sol (idbairro = 2), atribuído a Carlos Oliveira
 
 -- -----------------------------------------------------
 -- Inserção de dados na tabela `usuario_servico` (candidaturas)
