@@ -13,9 +13,8 @@ async function insertServico(req, res) {
 }
 
 async function getServicos(req, res) {
-    console.log(req.query)
     try {
-        const servicos = await services.demand.getServicos();
+        const servicos = await services.demand.getServicos(req.query);
         res.status(200).json(servicos);
     } catch (error) {
         res.status(500).send("Erro ao buscar serviços: " + error.message);
