@@ -1,0 +1,100 @@
+body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 20px;
+        }
+        .filters {
+            flex: 0 0 250px; /* Largura fixa para os filtros */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            height: fit-content; /* Ajusta a altura ao conteúdo */
+            position: sticky; /* Mantém os filtros visíveis ao rolar */
+            top: 20px; /* Distância do topo */
+        }
+        .filters h3 {
+            margin-top: 0;
+            color: #555;
+        }
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        .filter-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .filter-group select,
+        .filter-group input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .filter-group button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .filter-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .bicos-list {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .bico-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 5px solid #28a745;
+        }
+        .bico-card h4 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        .bico-card p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+        .bico-card .price {
+            font-weight: bold;
+            color: #28a745;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        .bico-card .location, .bico-card .category {
+            font-size: 0.85em;
+            color: #666;
+        }
+        .loading-message {
+            grid-column: 1 / -1; /* Ocupa todas as colunas */
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2em;
+            color: #888;
+        }
+        .filter-select.loading {
+            background-color: #f0f0f0;
+            color: #a0a0a0;
+            font-style: italic;
+        }

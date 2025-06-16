@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed de Bicos - Bicosthe</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="feed.css">
+    <script src="feed.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <aside class="filters">
+            <h3>Filtrar Bicos</h3>
+            <div class="filter-group">
+                <label for="zona">Zona:</label>
+                <select id="zona" class="filter-select loading" disabled>
+                    <option value="">Carregando Zonas...</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="bairro">Bairro:</label>
+                <select id="bairro" class="filter-select loading" disabled>
+                    <option value="">Carregando Bairros...</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="categoria">Categoria:</label>
+                <select id="categoria" class="filter-select loading" disabled>
+                    <option value="">Carregando Categorias...</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="valor-min">Valor Mínimo:</label>
+                <input type="number" id="valor-min" min="0" value="0">
+            </div>
+
+            <div class="filter-group">
+                <label for="valor-max">Valor Máximo:</label>
+                <input type="number" id="valor-max" min="0" value="1000">
+            </div>
+            
+            <div class="filter-group">
+                <button id="apply-filters">Aplicar Filtros</button>
+            </div>
+        </aside>
+
+        <main class="bicos-list" id="bicosList">
+            <div class="loading-message" id="loadingMessage">Carregando bicos...</div>
+            </main>
+    </div>
+</body>
+</html>

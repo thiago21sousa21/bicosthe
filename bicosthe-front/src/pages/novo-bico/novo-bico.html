@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Serviço</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>  
+  <link rel="stylesheet" href="cadastro-servico.css">
+  <script src="cadastro-servico.js" defer></script>
+</head>
+<body>
+  <h1>Cadastro de Serviço</h1>
+
+  <form id="servicoForm">
+
+    <label>Valor: <input type="number" step="0.01" name="valor" required></label><br><br>
+
+    <label>Título: <input type="text" name="titulo" maxlength="100" required></label><br><br>
+
+    <label>Descrição:<br>
+      <textarea name="descricao" maxlength="1000" rows="4" cols="50" required></textarea>
+    </label><br><br>
+
+    <label>Data de Início: <input type="datetime-local" name="dataInicio" required></label><br><br>
+
+    <label>Data de Fim: <input type="datetime-local" name="dataFim" required></label><br><br>
+
+    <label>ID da Região: <input type="number" name="idregiao" required></label><br><br>
+
+    <label>ID do Usuário: <input type="number" name="usuarioId" required></label><br><br>
+
+    <label>Contato Visível: <input type="checkbox" name="contato_visivel"></label><br><br>
+
+    <label>Categorias (IDs separados por vírgula):<br>
+      <input type="text" name="categorias" placeholder="Ex: 1,2,3" required>
+    </label><br><br>
+
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <div id="resposta" style="margin-top: 20px; font-weight: bold;"></div>
+
+</body>
+</html>
