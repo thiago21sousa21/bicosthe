@@ -1,0 +1,31 @@
+ .main-nav {
+    background-color: #333;
+    overflow: hidden;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.main-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center; /* Centraliza os itens */
+}
+.main-nav ul li {
+    display: inline-block; /* Alinha os itens na horizontal */
+    margin: 0 15px; /* Espaçamento entre os itens */
+}
+.main-nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.main-nav ul li a:hover {
+    background-color: #575757;
+}
+.main-nav .active a {
+    background-color: #007bff; /* Cor para a página ativa */
+}
