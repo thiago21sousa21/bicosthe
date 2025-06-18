@@ -21,7 +21,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         document.getElementById('resposta').innerText = '✅ Login realizado com sucesso!';
 
         // Redirecionar para a página principal (opcional)
-        // window.location.href = 'pagina-principal.html';
+        window.location.href = '../feed/feed.html';
 
       } catch (error) {
         console.error(error);

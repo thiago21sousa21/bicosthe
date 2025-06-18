@@ -5,8 +5,8 @@
   <title>Cadastro de Serviço</title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>  
    <script src="../../components/menu/menu.js"></script>
-  <link rel="stylesheet" href="cadastro-servico.css">
-  <script src="cadastro-servico.js" defer></script>
+  <link rel="stylesheet" href="novo-bico.css">
+  <script src="novo-bico.js" defer></script>
 </head>
 <body>
   <h1>Cadastro de Serviço</h1>
@@ -25,15 +25,13 @@
 
     <label>Data de Fim: <input type="datetime-local" name="dataFim" required></label><br><br>
 
-    <label>ID da Região: <input type="number" name="idregiao" required></label><br><br>
+    <label for="regiao">Região:</label><br>
+    <select id="regiao" name="idregiao" required>
+      </select><br><br>
 
-    <label>ID do Usuário: <input type="number" name="usuarioId" required></label><br><br>
-
-    <label>Contato Visível: <input type="checkbox" name="contato_visivel"></label><br><br>
-
-    <label>Categorias (IDs separados por vírgula):<br>
-      <input type="text" name="categorias" placeholder="Ex: 1,2,3" required>
-    </label><br><br>
+    <label for="categorias">Categorias:</label><br>
+    <select id="categorias" name="categorias" multiple required>
+      </select><br><br>
 
     <button type="submit">Cadastrar</button>
   </form>
