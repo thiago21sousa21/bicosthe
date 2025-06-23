@@ -27,7 +27,7 @@ async function fetchAndPopulateRegions() {
                 Authorization: `Bearer ${token}`
             }
         });
-        console.log(response.data); // Log the response data for debugging
+       
         const regioes = response.data;
         const regiaoSelect = document.getElementById('regiao');
         regioes.forEach(regiao => {
@@ -53,7 +53,7 @@ async function fetchAndPopulateCategories() {
         const categoriasSelect = document.getElementById('categorias');
         categorias.forEach(categoria => {
             const option = document.createElement('option');
-            option.value = categoria.id;
+            option.value = categoria.idcategoria;
             option.textContent = categoria.nome; // Assuming 'nome' is the property for category name
             categoriasSelect.appendChild(option);
         });
@@ -73,6 +73,7 @@ document.getElementById('servicoForm').addEventListener('submit', async function
 
     const form = e.target;
     const selectedCategories = Array.from(form.categorias.selectedOptions).map(option => parseInt(option.value));
+    console.log('Categorias selecionadas:', selectedCategories); // Log selected categories
 
     const data = {
         valor: parseFloat(form.valor.value),
@@ -85,6 +86,8 @@ document.getElementById('servicoForm').addEventListener('submit', async function
         contato_visivel: false, // Default to false, as per requirement
         categorias: selectedCategories
     };
+
+    console.log('Dados do formulário:', data); // Log the data being sent
 
     try {
         const res = await axios.post('http://localhost:5000/novo-bico', data, {
@@ -99,8 +102,7 @@ document.getElementById('servicoForm').addEventListener('submit', async function
         fetchAndPopulateRegions();
         fetchAndPopulateCategories();
     } catch (err) {
-        console.error(err);
-        const mensagem = err.response?.data?.message || err.message; // Access 'message' from the error response
+        const mensagem = err.response?.data || err; // Access 'message' from the error response
         document.getElementById('resposta').innerText = '❌ Erro ao cadastrar serviço: ' + mensagem;
     }
 });
