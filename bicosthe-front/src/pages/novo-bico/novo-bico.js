@@ -20,7 +20,9 @@ function formatDateToMySQL(datetimeStr) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-async function fetchAndPopulateRegions() {
+// --- Funções para popular os Dropdowns ---
+
+async function fetchAndPopulateZonas() { // Renomeado de Regions para Zonas
     try {
         const response = await axios.get('http://localhost:5000/zonas', {
             headers: {
@@ -28,17 +30,49 @@ async function fetchAndPopulateRegions() {
             }
         });
        
-        const regioes = response.data;
-        const regiaoSelect = document.getElementById('regiao');
-        regioes.forEach(regiao => {
+        const zonas = response.data;
+        const zonaSelect = document.getElementById('zona'); // Referencia o novo select de zona
+        zonaSelect.innerHTML = '<option value="">Selecione uma Zona</option>'; // Limpa e adiciona placeholder
+        zonas.forEach(zona => {
             const option = document.createElement('option');
-            option.value = regiao.idzona;
-            option.textContent = regiao.zona; // Assuming 'nome' is the property for region name
-            regiaoSelect.appendChild(option);
+            option.value = zona.idzona;
+            option.textContent = zona.zona;
+            zonaSelect.appendChild(option);
         });
     } catch (error) {
-        console.error('Erro ao buscar regiões:', error);
-        document.getElementById('resposta').innerText = '❌ Erro ao carregar regiões.';
+        console.error('Erro ao buscar zonas:', error);
+        document.getElementById('resposta').innerText = '❌ Erro ao carregar zonas.';
+    }
+}
+
+async function fetchAndPopulateBairros(idZona = null) { // Agora aceita idZona como parâmetro
+    const bairroSelect = document.getElementById('bairro');
+    bairroSelect.innerHTML = '<option value="">Selecione um Bairro</option>'; // Limpa e adiciona placeholder
+    bairroSelect.disabled = true; // Desabilita por padrão
+
+    if (!idZona) { // Se nenhuma zona for selecionada, não busca bairros
+        return;
+    }
+
+    try {
+        const response = await axios.get(`http://localhost:5000/bairros?idzona=${idZona}`, { // Requisição com filtro
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        
+        const bairros = response.data;
+        
+        bairros.forEach(bairro => {
+            const option = document.createElement('option');
+            option.value = bairro.idbairro;
+            option.textContent = bairro.bairro;
+            bairroSelect.appendChild(option);
+        });
+        bairroSelect.disabled = false; // Habilita o select de bairro após carregar
+    } catch (error) {
+        console.error('Erro ao buscar bairros:', error);
+        document.getElementById('resposta').innerText = '❌ Erro ao carregar bairros.';
     }
 }
 
@@ -51,10 +85,11 @@ async function fetchAndPopulateCategories() {
         });
         const categorias = response.data;
         const categoriasSelect = document.getElementById('categorias');
+        categoriasSelect.innerHTML = ''; // Limpa antes de popular
         categorias.forEach(categoria => {
             const option = document.createElement('option');
             option.value = categoria.idcategoria;
-            option.textContent = categoria.nome; // Assuming 'nome' is the property for category name
+            option.textContent = categoria.nome;
             categoriasSelect.appendChild(option);
         });
     } catch (error) {
@@ -63,9 +98,25 @@ async function fetchAndPopulateCategories() {
     }
 }
 
+// --- Event Listeners ---
+
 document.addEventListener('DOMContentLoaded', () => {
-    fetchAndPopulateRegions();
-    fetchAndPopulateCategories();
+    fetchAndPopulateZonas(); // Popula as zonas ao carregar a página
+    fetchAndPopulateCategories(); // Popula as categorias
+    // fetchAndPopulateBairros() NÃO é chamado aqui, pois depende da seleção de zona
+});
+
+// Listener para o select de zona
+document.getElementById('zona').addEventListener('change', (e) => {
+    const selectedZonaId = e.target.value;
+    if (selectedZonaId) {
+        fetchAndPopulateBairros(selectedZonaId); // Busca e popula bairros para a zona selecionada
+    } else {
+        // Se "Selecione uma Zona" for escolhido, limpa e desabilita bairros
+        const bairroSelect = document.getElementById('bairro');
+        bairroSelect.innerHTML = '<option value="">Selecione um Bairro</option>';
+        bairroSelect.disabled = true;
+    }
 });
 
 document.getElementById('servicoForm').addEventListener('submit', async function (e) {
@@ -73,7 +124,6 @@ document.getElementById('servicoForm').addEventListener('submit', async function
 
     const form = e.target;
     const selectedCategories = Array.from(form.categorias.selectedOptions).map(option => parseInt(option.value));
-    console.log('Categorias selecionadas:', selectedCategories); // Log selected categories
 
     const data = {
         valor: parseFloat(form.valor.value),
@@ -81,13 +131,14 @@ document.getElementById('servicoForm').addEventListener('submit', async function
         descricao: form.descricao.value,
         dataInicio: formatDateToMySQL(form.dataInicio.value),
         dataFim: formatDateToMySQL(form.dataFim.value),
-        idregiao: parseInt(form.idregiao.value),
+        // ATENÇÃO: idbairro é o nome do campo no formulário
+        idbairro: parseInt(form.idbairro.value), // Agora pegando do campo correto 'idbairro'
         usuarioId: parseInt(localStorage.getItem('idusuario')),
-        contato_visivel: false, // Default to false, as per requirement
+        contato_visivel: false, 
         categorias: selectedCategories
     };
 
-    console.log('Dados do formulário:', data); // Log the data being sent
+    console.log('Dados do formulário:', data);
 
     try {
         const res = await axios.post('http://localhost:5000/novo-bico', data, {
@@ -98,11 +149,12 @@ document.getElementById('servicoForm').addEventListener('submit', async function
 
         document.getElementById('resposta').innerText = '✅ Serviço cadastrado com sucesso!';
         form.reset();
-        // Re-fetch and populate categories/regions if you want them to reset after submission
-        fetchAndPopulateRegions();
+        // Após o reset, repopular as zonas e categorias
+        fetchAndPopulateZonas();
         fetchAndPopulateCategories();
+        // O campo de bairro será desabilitado e limpo pelo evento 'change' da zona (já que a zona será resetada)
     } catch (err) {
-        const mensagem = err.response?.data || err; // Access 'message' from the error response
+        const mensagem = err.response?.data || err.message; // Melhorado para pegar 'message' do erro
         document.getElementById('resposta').innerText = '❌ Erro ao cadastrar serviço: ' + mensagem;
     }
 });

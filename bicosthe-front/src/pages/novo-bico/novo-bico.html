@@ -25,9 +25,15 @@
 
     <label>Data de Fim: <input type="datetime-local" name="dataFim" required></label><br><br>
 
-    <label for="regiao">Região:</label><br>
-    <select id="regiao" name="idregiao" required>
-      </select><br><br>
+    <label for="zona">Zona:</label><br>
+    <select id="zona" name="idzona" required>
+        <option value="">Selecione uma Zona</option>
+    </select><br><br>
+
+    <label for="bairro">Bairro:</label><br>
+    <select id="bairro" name="idbairro" required disabled> 
+        <option value="">Selecione um Bairro</option>
+    </select><br><br>
 
     <label for="categorias">Categorias:</label><br>
     <select id="categorias" name="categorias" multiple required>

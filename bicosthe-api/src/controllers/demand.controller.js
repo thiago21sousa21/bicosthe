@@ -1,8 +1,7 @@
 import {services} from "../services/index.js";
 async function insertServico(req, res) {
-    const { valor, descricao, titulo, dataInicio, dataFim, idregiao, usuarioId } = req.body;
     try {
-        await services.demand.insertServico({ valor, descricao, titulo, dataInicio, dataFim, idregiao, usuarioId });
+        await services.demand.insertServico(req.body);
         res.status(201).send("Serviço cadastrado com sucesso.");
     } catch (error) {
         if (error.message === "Serviço já cadastrado") {
@@ -41,10 +40,11 @@ async function getZonas(req, res){
 
 async function getBairros(req, res){
     try {
-        const bairros = await services.demand.getBairros()
-        res.status(200).json(bairros)
+        const idZona = req.query.idzona ? parseInt(req.query.idzona) : null;
+        const bairros = await services.demand.getBairros(idZona);
+        res.status(200).json(bairros);
     } catch (error) {
-        res.status(500).send("Erro ao buscar as bairros: " + error.message)
+        res.status(500).send("Erro ao buscar as bairros: " + error.message);
     }
 }
 

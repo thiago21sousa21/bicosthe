@@ -29,7 +29,7 @@ export const schemaCadastroServico = Joi.object({
     .required()
     .custom((value, helpers) => {
       const inicio = helpers.state.ancestors[0]?.dataInicio;
-      if (inicio && value <= inicio) {
+      if (inicio && value < inicio) {
         return helpers.message("dataFim deve ser depois de dataInicio");
       }
       return value;
@@ -38,7 +38,7 @@ export const schemaCadastroServico = Joi.object({
       "string.pattern.base": "dataFim deve estar no formato YYYY-MM-DD HH:MM:SS",
     }),
 
-  idregiao: Joi.number()
+  idbairro: Joi.number()
     .integer()
     .required(),
 
